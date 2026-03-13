@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RAFTcorr — Deep Learning Digital Image Correlation</title>
+  <meta name="description" content="Zero-parameter, GPU-accelerated full-field deformation analysis in seconds. Deep learning DIC with 200+ pixel displacement range.">
+  <!-- SEO -->
+  <meta name="keywords" content="DIC, Digital Image Correlation, deep learning, optical flow, RAFT, displacement, strain, deformation, experimental mechanics, GPU">
+  <meta name="author" content="Zixiang Tong, Lehu Bu, Qihang Shi, Runtian Du, Jin Yang">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://zachtong.github.io/raftcorr">
+
+  <!-- Open Graph (Facebook/LinkedIn) -->
+  <meta property="og:title" content="RAFTcorr — Deep Learning Digital Image Correlation">
+  <meta property="og:description" content="Zero-parameter, GPU-accelerated full-field deformation analysis in seconds. Free and open source.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://zachtong.github.io/raftcorr">
+  <meta property="og:image" content="https://zachtong.github.io/raftcorr/assets/images/og-preview.png">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="RAFTcorr — Deep Learning Digital Image Correlation">
+  <meta name="twitter:description" content="Zero-parameter, GPU-accelerated full-field deformation analysis in seconds.">
+  <meta name="twitter:image" content="https://zachtong.github.io/raftcorr/assets/images/og-preview.png">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="assets/icons/favicon.svg">
+  <link rel="icon" type="image/png" href="assets/icons/favicon.png">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+
+  <!-- Performance: DNS prefetch for YouTube embed -->
+  <link rel="dns-prefetch" href="https://www.youtube.com">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Structured Data (JSON-LD) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "RAFTcorr",
+    "description": "Deep learning framework for Digital Image Correlation using RAFT optical flow",
+    "applicationCategory": "Scientific Software",
+    "operatingSystem": "Windows, Linux",
+    "url": "https://zachtong.github.io/raftcorr",
+    "author": {
+      "@type": "Organization",
+      "name": "The University of Texas at Austin"
+    },
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    }
+  }
+  </script>
+</head>
+<body>
+
+  <!-- =========================================
+       NAVBAR
+       ========================================= -->
+  <nav class="navbar" id="navbar">
+    <div class="navbar__inner">
+      <a href="#hero" class="navbar__logo">
+        RAFT<span class="navbar__logo-accent">corr</span>
+      </a>
+
+      <button class="navbar__hamburger" id="hamburger" aria-label="Toggle navigation menu" aria-expanded="false">
+        <span class="navbar__hamburger-line"></span>
+        <span class="navbar__hamburger-line"></span>
+        <span class="navbar__hamburger-line"></span>
+      </button>
+
+      <ul class="navbar__links" id="nav-links">
+        <li><a href="#method" class="navbar__link">Method</a></li>
+        <li><a href="#results" class="navbar__link">Results</a></li>
+        <li><a href="#comparison" class="navbar__link">Compare</a></li>
+        <li>
+          <a href="https://github.com/zachtong/2D-RAFT-DIC-GUI" class="navbar__link navbar__link--external" target="_blank" rel="noopener noreferrer">
+            GitHub
+            <svg class="navbar__external-icon" width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M3.5 1.5H10.5V8.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M10.5 1.5L1.5 10.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- =========================================
+       HERO SECTION
+       ========================================= -->
+  <section id="hero" class="hero">
+    <div class="hero__grid-overlay"></div>
+
+    <div class="hero__content">
+      <!-- Video Placeholder Card -->
+      <div class="hero__video-card" data-animate="fade-in">
+        <div class="hero__video-placeholder">
+          <div class="hero__video-gradient"></div>
+          <!-- Play button overlay -->
+          <div class="hero__play-overlay">
+            <svg class="hero__play-icon" width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="32" cy="32" r="31" stroke="rgba(255,255,255,0.3)" stroke-width="2"/>
+              <path d="M26 20L46 32L26 44V20Z" fill="rgba(255,255,255,0.8)"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- Title + Tagline -->
+      <div class="hero__text" data-animate="fade-in" data-delay="200">
+        <h1 class="hero__title">
+          RAFT<span class="hero__title-accent">corr</span>
+        </h1>
+        <p class="hero__tagline">Deep Learning Digital Image Correlation</p>
+      </div>
+
+      <!-- Buttons -->
+      <div class="hero__actions" data-animate="fade-in" data-delay="400">
+        <a href="https://github.com/zachtong/2D-RAFT-DIC-GUI#getting-started" class="btn btn--primary" target="_blank" rel="noopener noreferrer">
+          Get Started
+        </a>
+        <a href="https://github.com/zachtong/2D-RAFT-DIC-GUI" class="btn btn--secondary" target="_blank" rel="noopener noreferrer">
+          <svg class="btn__icon" width="18" height="18" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+          </svg>
+          GitHub
+        </a>
+      </div>
+    </div>
+
+    <!-- Scroll-down indicator -->
+    <div class="hero__scroll-indicator" data-animate="fade-in" data-delay="800">
+      <span class="hero__scroll-text">Scroll</span>
+      <div class="hero__scroll-arrow">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M10 4V16M10 16L4 10M10 16L16 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================
+       HIGHLIGHTS SECTION
+       ========================================= -->
+  <section id="highlights" class="highlights section">
+    <div class="container">
+      <div class="highlights__grid">
+        <div class="highlights__card glass-card" data-animate="slide-up" data-delay="0">
+          <span class="highlights__number">0</span>
+          <h3 class="highlights__card-title">Zero Parameters</h3>
+          <p class="highlights__card-desc">No subset size, step size, or strain window to tune.</p>
+        </div>
+        <div class="highlights__card glass-card" data-animate="slide-up" data-delay="100">
+          <span class="highlights__number">&lt;1s</span>
+          <h3 class="highlights__card-title">Per-Frame Speed</h3>
+          <p class="highlights__card-desc">GPU-accelerated dense field computation in under a second.</p>
+        </div>
+        <div class="highlights__card glass-card" data-animate="slide-up" data-delay="200">
+          <span class="highlights__number">200+ px</span>
+          <h3 class="highlights__card-title">Displacement Range</h3>
+          <p class="highlights__card-desc">Native large deformation without initial guess.</p>
+        </div>
+        <div class="highlights__card glass-card" data-animate="slide-up" data-delay="300">
+          <span class="highlights__number">$0</span>
+          <h3 class="highlights__card-title">Free &amp; Open Source</h3>
+          <p class="highlights__card-desc">Fully open source, runs on any NVIDIA GPU.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================
+       DEMO VIDEO SECTION
+       ========================================= -->
+  <section id="demo" class="demo section">
+    <div class="container">
+      <h2 class="section__title" data-animate="fade-in">See It in Action</h2>
+      <p class="section__subtitle" data-animate="fade-in" data-delay="100">From raw speckle images to full-field strain maps in seconds.</p>
+
+      <div class="demo__video-wrapper" data-animate="fade-in" data-delay="200">
+        <div class="demo__video-card glass-card">
+          <!-- YouTube embed placeholder — replace data-video-id with actual YouTube ID -->
+          <div class="demo__video-container" data-video-id="YOUR_YOUTUBE_ID">
+            <div class="demo__video-thumbnail">
+              <div class="demo__video-play-btn">
+                <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="24" cy="24" r="23" stroke="rgba(255,255,255,0.4)" stroke-width="2"/>
+                  <path d="M20 15L35 24L20 33V15Z" fill="rgba(255,255,255,0.9)"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="demo__workflow" data-animate="fade-in" data-delay="300">
+        <div class="demo__step">
+          <span class="demo__step-number">1</span>
+          <span class="demo__step-label">Load Images</span>
+        </div>
+        <div class="demo__step-arrow">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M5 12H19M19 12L13 6M19 12L13 18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="demo__step">
+          <span class="demo__step-number">2</span>
+          <span class="demo__step-label">Set ROI</span>
+        </div>
+        <div class="demo__step-arrow">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M5 12H19M19 12L13 6M19 12L13 18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="demo__step">
+          <span class="demo__step-number">3</span>
+          <span class="demo__step-label">Process</span>
+        </div>
+        <div class="demo__step-arrow">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M5 12H19M19 12L13 6M19 12L13 18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="demo__step">
+          <span class="demo__step-number">4</span>
+          <span class="demo__step-label">Visualize</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================
+       METHOD SECTION
+       ========================================= -->
+  <section id="method" class="method section">
+    <div class="container">
+      <h2 class="section__title" data-animate="fade-in">How It Works</h2>
+      <p class="section__subtitle" data-animate="fade-in" data-delay="100">End-to-end dense displacement and strain estimation.</p>
+
+      <div class="method__pipeline" data-animate="fade-in" data-delay="200">
+        <div class="method__node glass-card" data-animate="slide-up" data-delay="0">
+          <div class="method__node-visual method__node-visual--speckle">
+            <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="4" y="4" width="40" height="40" rx="4" stroke="var(--accent-blue)" stroke-width="1.5"/>
+              <circle cx="15" cy="15" r="2" fill="var(--text-secondary)"/>
+              <circle cx="28" cy="12" r="1.5" fill="var(--text-secondary)"/>
+              <circle cx="35" cy="18" r="2.5" fill="var(--text-secondary)"/>
+              <circle cx="12" cy="28" r="1.5" fill="var(--text-secondary)"/>
+              <circle cx="22" cy="24" r="2" fill="var(--text-secondary)"/>
+              <circle cx="33" cy="30" r="1.5" fill="var(--text-secondary)"/>
+              <circle cx="18" cy="36" r="2" fill="var(--text-secondary)"/>
+              <circle cx="30" cy="38" r="1.5" fill="var(--text-secondary)"/>
+              <circle cx="38" cy="35" r="2" fill="var(--text-secondary)"/>
+            </svg>
+          </div>
+          <h3 class="method__node-title">Speckle Images</h3>
+          <p class="method__node-desc">Input image pairs</p>
+        </div>
+
+        <div class="method__connector" data-animate="fade-in" data-delay="150">
+          <div class="method__connector-line"></div>
+          <svg class="method__connector-arrow" width="12" height="12" viewBox="0 0 12 12"><path d="M2 6H10M10 6L6 2M10 6L6 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+
+        <div class="method__node glass-card" data-animate="slide-up" data-delay="200">
+          <div class="method__node-visual method__node-visual--network">
+            <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="10" cy="14" r="4" stroke="var(--accent-blue)" stroke-width="1.5"/>
+              <circle cx="10" cy="34" r="4" stroke="var(--accent-blue)" stroke-width="1.5"/>
+              <circle cx="24" cy="10" r="4" stroke="var(--accent-teal)" stroke-width="1.5"/>
+              <circle cx="24" cy="24" r="4" stroke="var(--accent-teal)" stroke-width="1.5"/>
+              <circle cx="24" cy="38" r="4" stroke="var(--accent-teal)" stroke-width="1.5"/>
+              <circle cx="38" cy="24" r="4" stroke="var(--accent-blue)" stroke-width="1.5"/>
+              <path d="M14 14L20 10M14 14L20 24M14 14L20 38M14 34L20 10M14 34L20 24M14 34L20 38M28 10L34 24M28 24L34 24M28 38L34 24" stroke="var(--text-muted)" stroke-width="0.75"/>
+            </svg>
+          </div>
+          <h3 class="method__node-title">RAFT Network</h3>
+          <p class="method__node-desc">Deep optical flow</p>
+        </div>
+
+        <div class="method__connector" data-animate="fade-in" data-delay="350">
+          <div class="method__connector-line"></div>
+          <svg class="method__connector-arrow" width="12" height="12" viewBox="0 0 12 12"><path d="M2 6H10M10 6L6 2M10 6L6 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+
+        <div class="method__node glass-card" data-animate="slide-up" data-delay="400">
+          <div class="method__node-visual method__node-visual--displacement">
+            <div class="method__mini-colormap method__mini-colormap--uv"></div>
+          </div>
+          <h3 class="method__node-title">Displacement Field</h3>
+          <p class="method__node-desc">Dense u, v maps</p>
+        </div>
+
+        <div class="method__connector" data-animate="fade-in" data-delay="550">
+          <div class="method__connector-line"></div>
+          <svg class="method__connector-arrow" width="12" height="12" viewBox="0 0 12 12"><path d="M2 6H10M10 6L6 2M10 6L6 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+
+        <div class="method__node glass-card" data-animate="slide-up" data-delay="600">
+          <div class="method__node-visual method__node-visual--strain">
+            <div class="method__mini-colormap method__mini-colormap--strain"></div>
+          </div>
+          <h3 class="method__node-title">Strain Field</h3>
+          <p class="method__node-desc">&epsilon;xx, &epsilon;yy maps</p>
+        </div>
+      </div>
+
+      <p class="method__summary" data-animate="fade-in" data-delay="400">
+        RAFTcorr feeds speckle image pairs into a deep optical flow network (RAFT) to produce dense displacement fields. Strain fields are then computed via a virtual strain gauge method&thinsp;&mdash;&thinsp;no iterative optimization, no parameter tuning.
+      </p>
+    </div>
+  </section>
+
+  <!-- =========================================
+       RESULTS GALLERY SECTION
+       ========================================= -->
+  <section id="results" class="results section">
+    <div class="container">
+      <h2 class="section__title" data-animate="fade-in">Results</h2>
+      <p class="section__subtitle" data-animate="fade-in" data-delay="100">Validated across diverse experimental conditions.</p>
+
+      <div class="results__carousel" data-animate="fade-in" data-delay="200">
+        <div class="results__carousel-track" id="carousel-track">
+          <!-- Slide 1 -->
+          <div class="results__slide">
+            <div class="results__slide-images">
+              <div class="results__slide-img results__slide-img--original">
+                <div class="results__img-placeholder">
+                  <span>Original</span>
+                </div>
+                <span class="results__img-label">Speckle Image</span>
+              </div>
+              <div class="results__slide-img results__slide-img--result">
+                <div class="results__img-placeholder results__img-placeholder--colormap">
+                  <span>Result</span>
+                </div>
+                <span class="results__img-label">Displacement Field</span>
+              </div>
+            </div>
+            <p class="results__slide-caption">Tensile Test &mdash; Displacement and strain concentration</p>
+          </div>
+
+          <!-- Slide 2 -->
+          <div class="results__slide">
+            <div class="results__slide-images">
+              <div class="results__slide-img results__slide-img--original">
+                <div class="results__img-placeholder">
+                  <span>Original</span>
+                </div>
+                <span class="results__img-label">Speckle Image</span>
+              </div>
+              <div class="results__slide-img results__slide-img--result">
+                <div class="results__img-placeholder results__img-placeholder--colormap">
+                  <span>Result</span>
+                </div>
+                <span class="results__img-label">Strain Field</span>
+              </div>
+            </div>
+            <p class="results__slide-caption">Bending Test &mdash; Complex deformation patterns</p>
+          </div>
+
+          <!-- Slide 3 -->
+          <div class="results__slide">
+            <div class="results__slide-images">
+              <div class="results__slide-img results__slide-img--original">
+                <div class="results__img-placeholder">
+                  <span>Original</span>
+                </div>
+                <span class="results__img-label">Speckle Image</span>
+              </div>
+              <div class="results__slide-img results__slide-img--result">
+                <div class="results__img-placeholder results__img-placeholder--colormap">
+                  <span>Result</span>
+                </div>
+                <span class="results__img-label">Displacement Field</span>
+              </div>
+            </div>
+            <p class="results__slide-caption">Large Deformation &mdash; 200+ pixel displacement range</p>
+          </div>
+
+          <!-- Slide 4 -->
+          <div class="results__slide">
+            <div class="results__slide-images">
+              <div class="results__slide-img results__slide-img--original">
+                <div class="results__img-placeholder">
+                  <span>Original</span>
+                </div>
+                <span class="results__img-label">Speckle Image</span>
+              </div>
+              <div class="results__slide-img results__slide-img--result">
+                <div class="results__img-placeholder results__img-placeholder--colormap">
+                  <span>Result</span>
+                </div>
+                <span class="results__img-label">Strain Field</span>
+              </div>
+            </div>
+            <p class="results__slide-caption">Low-Texture Surface &mdash; Robustness on challenging patterns</p>
+          </div>
+        </div>
+
+        <!-- Carousel Controls -->
+        <button class="results__carousel-btn results__carousel-btn--prev" id="carousel-prev" aria-label="Previous slide">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M15 19L8 12L15 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <button class="results__carousel-btn results__carousel-btn--next" id="carousel-next" aria-label="Next slide">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M9 5L16 12L9 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+
+        <!-- Dot Navigation -->
+        <div class="results__carousel-dots" id="carousel-dots"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================
+       COMPARISON TABLE SECTION
+       ========================================= -->
+  <section id="comparison" class="comparison section">
+    <div class="container">
+      <h2 class="section__title" data-animate="fade-in">How We Compare</h2>
+      <p class="section__subtitle" data-animate="fade-in" data-delay="100">Honest comparison against established DIC tools.</p>
+
+      <div class="comparison__table-wrapper" data-animate="fade-in" data-delay="200">
+        <table class="comparison__table">
+          <thead>
+            <tr>
+              <th class="comparison__th comparison__th--metric">Metric</th>
+              <th class="comparison__th comparison__th--raftcorr">RAFTcorr</th>
+              <th class="comparison__th">Ncorr</th>
+              <th class="comparison__th">VIC-2D</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr data-animate="slide-left" data-delay="100">
+              <td class="comparison__metric">Speed</td>
+              <td class="comparison__value comparison__value--highlight comparison__value--advantage">&lt;1s / frame</td>
+              <td class="comparison__value">~minutes</td>
+              <td class="comparison__value">~minutes</td>
+            </tr>
+            <tr data-animate="slide-left" data-delay="150">
+              <td class="comparison__metric">Range</td>
+              <td class="comparison__value comparison__value--highlight comparison__value--advantage">200+ px</td>
+              <td class="comparison__value">~15 px</td>
+              <td class="comparison__value">~20 px</td>
+            </tr>
+            <tr data-animate="slide-left" data-delay="200">
+              <td class="comparison__metric">Parameters</td>
+              <td class="comparison__value comparison__value--highlight comparison__value--advantage">0</td>
+              <td class="comparison__value">5&ndash;8</td>
+              <td class="comparison__value">5&ndash;8</td>
+            </tr>
+            <tr data-animate="slide-left" data-delay="250">
+              <td class="comparison__metric">Accuracy</td>
+              <td class="comparison__value comparison__value--highlight">~0.03 px</td>
+              <td class="comparison__value comparison__value--advantage">~0.01 px</td>
+              <td class="comparison__value comparison__value--advantage">~0.01 px</td>
+            </tr>
+            <tr data-animate="slide-left" data-delay="300">
+              <td class="comparison__metric">Cost</td>
+              <td class="comparison__value comparison__value--highlight comparison__value--advantage">Free</td>
+              <td class="comparison__value">Free</td>
+              <td class="comparison__value">$$$</td>
+            </tr>
+            <tr data-animate="slide-left" data-delay="350">
+              <td class="comparison__metric">GPU Accel.</td>
+              <td class="comparison__value comparison__value--highlight comparison__value--advantage">&#10003; CUDA</td>
+              <td class="comparison__value comparison__value--disadvantage">&#10007;</td>
+              <td class="comparison__value comparison__value--disadvantage">&#10007;</td>
+            </tr>
+            <tr data-animate="slide-left" data-delay="400">
+              <td class="comparison__metric">Interface</td>
+              <td class="comparison__value comparison__value--highlight">Web GUI</td>
+              <td class="comparison__value">MATLAB</td>
+              <td class="comparison__value">Desktop</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p class="comparison__footnote" data-animate="fade-in" data-delay="500">
+        <em>Accuracy comparison based on standard SEM Challenge benchmark. RAFTcorr trades marginal sub-pixel accuracy for dramatic gains in speed, range, and usability.</em>
+      </p>
+    </div>
+  </section>
+
+  <!-- =========================================
+       TEAM SECTION
+       ========================================= -->
+  <section id="team" class="team section">
+    <div class="container">
+      <h2 class="section__title" data-animate="fade-in">Team</h2>
+      <p class="section__subtitle" data-animate="fade-in" data-delay="100">The University of Texas at Austin</p>
+
+      <div class="team__grid" data-animate="fade-in" data-delay="200">
+        <div class="team__member">
+          <div class="team__avatar">
+            <span class="team__initials">ZT</span>
+          </div>
+          <h3 class="team__name">Zixiang Tong</h3>
+          <p class="team__role">Lead Developer</p>
+        </div>
+
+        <div class="team__member">
+          <div class="team__avatar">
+            <span class="team__initials">LB</span>
+          </div>
+          <h3 class="team__name">Lehu Bu</h3>
+          <p class="team__role">Researcher</p>
+        </div>
+
+        <div class="team__member">
+          <div class="team__avatar">
+            <span class="team__initials">QS</span>
+          </div>
+          <h3 class="team__name">Qihang Shi</h3>
+          <p class="team__role">Researcher</p>
+        </div>
+
+        <div class="team__member">
+          <div class="team__avatar">
+            <span class="team__initials">RD</span>
+          </div>
+          <h3 class="team__name">Runtian Du</h3>
+          <p class="team__role">Researcher</p>
+        </div>
+
+        <div class="team__member">
+          <div class="team__avatar team__avatar--pi">
+            <span class="team__initials">JY</span>
+          </div>
+          <h3 class="team__name">Jin Yang</h3>
+          <p class="team__role">Principal Investigator</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================
+       CITATION SECTION
+       ========================================= -->
+  <section id="citation" class="citation section">
+    <div class="container">
+      <h2 class="section__title" data-animate="fade-in">Citation</h2>
+      <p class="section__subtitle" data-animate="fade-in" data-delay="100">If you use RAFTcorr in your research, please cite our work.</p>
+
+      <div class="citation__block" data-animate="fade-in" data-delay="200">
+        <pre class="citation__code" id="bibtex-code"><code>@article{tong2026raftcorr,
+  title={RAFTcorr: Deep Learning Digital Image Correlation},
+  author={Tong, Zixiang and Bu, Lehu and Shi, Qihang
+          and Du, Runtian and Yang, Jin},
+  year={2026},
+  note={In preparation}
+}</code></pre>
+        <button class="citation__copy-btn" id="copy-bibtex" aria-label="Copy BibTeX to clipboard">
+          <svg class="citation__copy-icon" width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="6" y="6" width="10" height="10" rx="2" stroke="currentColor" stroke-width="1.5"/>
+            <path d="M12 6V4C12 2.89543 11.1046 2 10 2H4C2.89543 2 2 2.89543 2 4V10C2 11.1046 2.89543 12 4 12H6" stroke="currentColor" stroke-width="1.5"/>
+          </svg>
+          <span class="citation__copy-text">Copy</span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================
+       FOOTER
+       ========================================= -->
+  <footer class="footer">
+    <div class="footer__inner">
+      <p class="footer__brand">
+        RAFT<span class="footer__brand-accent">corr</span> &middot; The University of Texas at Austin
+      </p>
+      <div class="footer__links">
+        <a href="https://github.com/zachtong/2D-RAFT-DIC-GUI" class="footer__link" target="_blank" rel="noopener noreferrer">GitHub</a>
+        <span class="footer__divider">&middot;</span>
+        <a href="#citation" class="footer__link">Paper</a>
+        <span class="footer__divider">&middot;</span>
+        <a href="mailto:zachtong@utexas.edu" class="footer__link">Contact</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="script.js"></script>
+</body>
+</html>
