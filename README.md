@@ -2,7 +2,7 @@
 
 Promotional website for **RAFTcorr**: a deep learning framework for Digital Image Correlation (DIC).
 
-**Live:** [zachtong.github.io/raftcorr](https://zachtong.github.io/raftcorr)
+**Live:** [zachtong.github.io/raftcorr-web](https://zachtong.github.io/raftcorr-web)
 
 ## Development
 

@@ -3,7 +3,7 @@
 ## Overview
 Promotional single-page website for RAFTcorr (Deep Learning DIC software).
 - **Tech stack:** Pure HTML + CSS + vanilla JS, zero dependencies
-- **Hosting:** GitHub Pages (`zachtong.github.io/raftcorr`)
+- **Hosting:** GitHub Pages (`zachtong.github.io/raftcorr-web`)
 - **Style:** Dark sci-fi theme, SAM2-style hero + NeRF-style academic content
 
 ## Architecture
