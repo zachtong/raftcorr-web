@@ -294,6 +294,16 @@ button {
   opacity: 0.8;
 }
 
+/* Subscribe nav link */
+.navbar__link--subscribe {
+  color: var(--accent-blue);
+  gap: 6px;
+}
+
+.navbar__link--subscribe:hover {
+  color: var(--text-primary);
+}
+
 /* Hamburger */
 .navbar__hamburger {
   display: none;
@@ -495,6 +505,71 @@ button {
   display: flex;
   gap: 16px;
   align-items: center;
+}
+
+/* Hero Inline Subscribe */
+.hero__subscribe {
+  width: 100%;
+  max-width: 420px;
+}
+
+.hero__subscribe-form {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 4px 4px 4px 14px;
+  transition: border-color var(--transition-base),
+              box-shadow var(--transition-base);
+}
+
+.hero__subscribe-form:focus-within {
+  border-color: rgba(74, 158, 255, 0.4);
+  box-shadow: 0 0 0 3px rgba(74, 158, 255, 0.1);
+}
+
+.hero__subscribe-icon {
+  flex-shrink: 0;
+  color: var(--text-muted);
+  width: 16px;
+  height: 16px;
+}
+
+.hero__subscribe-input {
+  flex: 1;
+  background: none;
+  border: none;
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: 0.8125rem;
+  padding: 8px 10px;
+  outline: none;
+  min-width: 0;
+}
+
+.hero__subscribe-input::placeholder {
+  color: var(--text-muted);
+}
+
+.hero__subscribe-btn {
+  flex-shrink: 0;
+  padding: 8px 16px;
+  background: var(--accent-blue);
+  color: #fff;
+  font-family: var(--font-body);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  border: none;
+  border-radius: calc(var(--radius-md) - 2px);
+  cursor: pointer;
+  transition: background var(--transition-base);
+  white-space: nowrap;
+}
+
+.hero__subscribe-btn:hover {
+  background: #3d8be5;
 }
 
 /* Scroll Indicator */
@@ -1419,6 +1494,11 @@ button {
   .btn {
     justify-content: center;
     width: 100%;
+  }
+
+  .hero__subscribe {
+    max-width: 100%;
+    padding: 0 20px;
   }
 
   .hero__scroll-indicator {
