@@ -14,6 +14,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initNavbar();
   initCarousel();
   initBibTeXCopy();
+  initNewsletterConfirmation();
 });
 
 
@@ -268,6 +269,28 @@ function initBibTeXCopy() {
     }
   });
 }
+
+/* ===========================================
+   5. NEWSLETTER SUBSCRIPTION CONFIRMATION
+   =========================================== */
+
+function initNewsletterConfirmation() {
+  const params = new URLSearchParams(window.location.search);
+  if (params.get("subscribed") !== "1") return;
+
+  const form = document.querySelector(".newsletter__form");
+  if (!form) return;
+
+  // Replace form with confirmation message
+  const confirmation = document.createElement("p");
+  confirmation.className = "newsletter__confirmed newsletter__confirmed--visible";
+  confirmation.textContent = "Thanks for subscribing! We\u2019ll keep you posted.";
+  form.replaceWith(confirmation);
+
+  // Clean URL without reload
+  window.history.replaceState({}, "", window.location.pathname);
+}
+
 
 function showCopyFeedback(btn, success) {
   const textEl = btn.querySelector(".citation__copy-text");

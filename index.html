@@ -39,6 +39,15 @@
   <!-- Styles -->
   <link rel="stylesheet" href="style.css">
 
+  <!-- Google Analytics (GA4) — Replace G-WJVRN4JH4X with your Measurement ID -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-WJVRN4JH4X"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-WJVRN4JH4X');
+  </script>
+
   <!-- Structured Data (JSON-LD) -->
   <script type="application/ld+json">
   {
@@ -562,6 +571,48 @@
           </svg>
           <span class="citation__copy-text">Copy</span>
         </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================
+       NEWSLETTER SECTION
+       ========================================= -->
+  <section id="newsletter" class="newsletter section">
+    <div class="container">
+      <div class="newsletter__card glass-card" data-animate="fade-in">
+        <div class="newsletter__icon">
+          <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="4" y="8" width="32" height="24" rx="3" stroke="var(--accent-blue)" stroke-width="1.5"/>
+            <path d="M4 11L20 23L36 11" stroke="var(--accent-blue)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <h2 class="newsletter__title">Stay Updated</h2>
+        <p class="newsletter__desc">Get notified when we publish the paper, release new versions, or share tutorials.</p>
+
+        <form class="newsletter__form" action="https://formsubmit.co/zachtong@utexas.edu" method="POST">
+          <!-- FormSubmit configuration -->
+          <input type="hidden" name="_subject" value="RAFTcorr Newsletter Signup">
+          <input type="hidden" name="_captcha" value="false">
+          <input type="hidden" name="_next" value="https://zachtong.github.io/raftcorr-web/?subscribed=1">
+          <input type="text" name="_honey" style="display:none">
+
+          <div class="newsletter__input-group">
+            <input
+              type="email"
+              name="email"
+              class="newsletter__input"
+              placeholder="your@email.com"
+              required
+              aria-label="Email address"
+            >
+            <button type="submit" class="btn btn--primary newsletter__btn">
+              Subscribe
+            </button>
+          </div>
+        </form>
+
+        <p class="newsletter__privacy">No spam. Unsubscribe anytime.</p>
       </div>
     </div>
   </section>
