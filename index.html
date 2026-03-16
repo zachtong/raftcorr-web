@@ -520,21 +520,19 @@
         <h2 class="newsletter__title">Stay Updated</h2>
         <p class="newsletter__desc">Get notified when we publish the paper, release new versions, or share tutorials.</p>
 
-        <form class="newsletter__form" action="https://formsubmit.co/zachtong@utexas.edu" method="POST">
-          <!-- FormSubmit configuration -->
-          <input type="hidden" name="_subject" value="RAFTcorr Newsletter Signup">
-          <input type="hidden" name="_captcha" value="false">
-          <input type="hidden" name="_next" value="https://zachtong.github.io/raftcorr-web/?subscribed=1">
-          <input type="text" name="_honey" style="display:none">
+        <form class="newsletter__form ml-block-form" action="https://assets.mailerlite.com/jsonp/2196518/forms/182118053488624784/subscribe" method="post" target="_blank">
+          <input type="hidden" name="ml-submit" value="1">
+          <input type="hidden" name="anticsrf" value="true">
 
           <div class="newsletter__input-group">
             <input
               type="email"
-              name="email"
+              name="fields[email]"
               class="newsletter__input"
               placeholder="your@email.com"
               required
               aria-label="Email address"
+              autocomplete="email"
             >
             <button type="submit" class="btn btn--primary newsletter__btn">
               Subscribe
@@ -542,6 +540,7 @@
           </div>
         </form>
 
+        <p class="newsletter__success" id="newsletter-success" style="display:none">Thanks for subscribing!</p>
         <p class="newsletter__privacy">No spam. Unsubscribe anytime.</p>
       </div>
     </div>
@@ -646,5 +645,9 @@
 
   <!-- Scripts -->
   <script src="script.js"></script>
+
+  <!-- MailerLite -->
+  <script src="https://groot.mailerlite.com/js/w/webforms.min.js?v95037e5bac78f29ed026832ca21a7c7b" type="text/javascript"></script>
+  <script>fetch("https://assets.mailerlite.com/jsonp/2196518/forms/182118053488624784/takel")</script>
 </body>
 </html>

@@ -1316,6 +1316,13 @@ button {
   color: var(--text-muted);
 }
 
+.newsletter__success {
+  color: var(--accent-teal);
+  font-weight: 500;
+  font-size: 0.9375rem;
+  margin-bottom: 8px;
+}
+
 /* Newsletter subscribed confirmation */
 .newsletter__confirmed {
   display: none;
