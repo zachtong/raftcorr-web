@@ -945,37 +945,35 @@ button {
   grid-template-columns: 1fr 1fr;
   gap: 20px;
   margin-bottom: 20px;
+  align-items: end;
 }
 
 .results__slide-img {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-}
-
-.results__img-placeholder {
-  aspect-ratio: 4 / 3;
-  background: var(--bg-secondary);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-md);
-  display: flex;
   align-items: center;
-  justify-content: center;
-  color: var(--text-muted);
-  font-size: 0.875rem;
+  gap: 8px;
+  min-width: 0;
 }
 
-.results__img-placeholder--colormap {
-  background: linear-gradient(135deg, #0000cc, #0099ff, #00ff99, #ffff00, #ff3300);
-  background-size: 300% 300%;
-  animation: gradient-shift 6s ease infinite;
+.results__slide-img img {
+  max-width: 100%;
+  max-height: 420px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-subtle);
 }
 
-.results__img-placeholder--colormap span {
-  background: rgba(0, 0, 0, 0.4);
-  padding: 4px 12px;
-  border-radius: var(--radius-sm);
-  color: #fff;
+/* Portrait pairs (Al, Foam): taller images need more height */
+.results__slide-images--portrait .results__slide-img img {
+  max-height: 420px;
+}
+
+/* Landscape pairs (Cavitation, Metamaterial): shorter images */
+.results__slide-images--landscape .results__slide-img img {
+  max-height: 320px;
 }
 
 .results__img-label {
@@ -1573,8 +1571,25 @@ button {
   }
 
   .results__slide-images {
-    grid-template-columns: 1fr;
+    flex-direction: column;
+    align-items: center;
     gap: 16px;
+    max-height: none;
+  }
+
+  .results__slide-images--portrait,
+  .results__slide-images--landscape {
+    max-height: none;
+  }
+
+  .results__slide-img {
+    max-width: 80%;
+  }
+
+  .results__slide-img img,
+  .results__slide-images--portrait .results__slide-img img,
+  .results__slide-images--landscape .results__slide-img img {
+    max-height: 250px;
   }
 
   .results__carousel-btn {
