@@ -117,29 +117,67 @@
        HERO SECTION
        ========================================= -->
   <section id="hero" class="hero">
+    <!-- Blurred background video layer (syncs with foreground) -->
+    <div class="hero__bg-video-layer">
+      <video class="hero__bg-video hero__bg-video--active" muted loop autoplay playsinline
+             src="assets/videos/Al_with_hole_displacement.mp4"></video>
+      <video class="hero__bg-video" muted loop playsinline
+             src="assets/videos/Al_with_hole_von_Mises_strain.mp4"></video>
+      <video class="hero__bg-video" muted loop playsinline
+             src="assets/videos/cavitation_flow_displacement.mp4"></video>
+      <video class="hero__bg-video" muted loop playsinline
+             src="assets/videos/cavitation_flow_magnitude_streamline.mp4"></video>
+      <video class="hero__bg-video" muted loop playsinline
+             src="assets/videos/foam_fracture_disp.mp4"></video>
+      <video class="hero__bg-video" muted loop playsinline
+             src="assets/videos/foam_fracture_strain.mp4"></video>
+      <div class="hero__bg-overlay"></div>
+    </div>
+
     <div class="hero__grid-overlay"></div>
 
     <div class="hero__content">
-      <!-- Video Placeholder Card -->
-      <div class="hero__video-card" data-animate="fade-in">
-        <div class="hero__video-placeholder">
-          <div class="hero__video-gradient"></div>
-          <!-- Play button overlay -->
-          <div class="hero__play-overlay">
-            <svg class="hero__play-icon" width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <circle cx="32" cy="32" r="31" stroke="rgba(255,255,255,0.3)" stroke-width="2"/>
-              <path d="M26 20L46 32L26 44V20Z" fill="rgba(255,255,255,0.8)"/>
-            </svg>
-          </div>
-        </div>
-      </div>
-
       <!-- Title + Tagline -->
-      <div class="hero__text" data-animate="fade-in" data-delay="200">
+      <div class="hero__text" data-animate="fade-in">
         <h1 class="hero__title">
           RAFT<span class="hero__title-accent">corr</span>
         </h1>
         <p class="hero__tagline">Deep Learning Digital Image Correlation</p>
+      </div>
+
+      <!-- Foreground Video Showcase Card -->
+      <div class="hero__showcase" data-animate="fade-in" data-delay="200">
+        <div class="hero__showcase-card glass-card">
+          <div class="hero__showcase-viewport">
+            <video class="hero__showcase-video hero__showcase-video--active" muted autoplay playsinline
+                   src="assets/videos/Al_with_hole_displacement.mp4"></video>
+            <video class="hero__showcase-video" muted playsinline
+                   src="assets/videos/Al_with_hole_von_Mises_strain.mp4"></video>
+            <video class="hero__showcase-video" muted playsinline
+                   src="assets/videos/cavitation_flow_displacement.mp4"></video>
+            <video class="hero__showcase-video" muted playsinline
+                   src="assets/videos/cavitation_flow_magnitude_streamline.mp4"></video>
+            <video class="hero__showcase-video" muted playsinline
+                   src="assets/videos/foam_fracture_disp.mp4"></video>
+            <video class="hero__showcase-video" muted playsinline
+                   src="assets/videos/foam_fracture_strain.mp4"></video>
+          </div>
+          <div class="hero__showcase-label" id="hero-showcase-label">
+            Aluminum with Hole &mdash; Displacement
+          </div>
+        </div>
+
+        <!-- Showcase navigation -->
+        <div class="hero__showcase-nav">
+          <div class="hero__showcase-dots" id="hero-showcase-dots">
+            <button class="hero__showcase-dot hero__showcase-dot--active" aria-label="Slide 1" data-index="0"></button>
+            <button class="hero__showcase-dot" aria-label="Slide 2" data-index="1"></button>
+            <button class="hero__showcase-dot" aria-label="Slide 3" data-index="2"></button>
+            <button class="hero__showcase-dot" aria-label="Slide 4" data-index="3"></button>
+            <button class="hero__showcase-dot" aria-label="Slide 5" data-index="4"></button>
+            <button class="hero__showcase-dot" aria-label="Slide 6" data-index="5"></button>
+          </div>
+        </div>
       </div>
 
       <!-- Buttons -->

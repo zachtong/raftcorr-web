@@ -12,6 +12,7 @@
 document.addEventListener("DOMContentLoaded", () => {
   initScrollAnimations();
   initNavbar();
+  initHeroShowcase();
   initCarousel();
   initBibTeXCopy();
 });
@@ -48,7 +49,88 @@ function initScrollAnimations() {
 
 
 /* ===========================================
-   2. NAVBAR
+   2. HERO VIDEO SHOWCASE
+   =========================================== */
+
+function initHeroShowcase() {
+  const bgVideos = document.querySelectorAll(".hero__bg-video");
+  const fgVideos = document.querySelectorAll(".hero__showcase-video");
+  const dots = document.querySelectorAll(".hero__showcase-dot");
+  const label = document.getElementById("hero-showcase-label");
+
+  if (fgVideos.length === 0 || bgVideos.length === 0) return;
+
+  const labels = [
+    "Aluminum with Hole \u2014 Displacement",
+    "Aluminum with Hole \u2014 von Mises Strain",
+    "Cavitation Flow \u2014 Displacement",
+    "Cavitation Flow \u2014 Streamlines",
+    "Foam Fracture \u2014 Displacement",
+    "Foam Fracture \u2014 Strain",
+  ];
+
+  let currentIndex = 0;
+
+  function goTo(index) {
+    const next = ((index % fgVideos.length) + fgVideos.length) % fgVideos.length;
+    if (next === currentIndex && fgVideos[currentIndex].currentTime > 0) return;
+    const prev = currentIndex;
+    currentIndex = next;
+
+    // Swap foreground videos
+    fgVideos[prev].classList.remove("hero__showcase-video--active");
+    fgVideos[prev].pause();
+    fgVideos[prev].currentTime = 0;
+    fgVideos[currentIndex].classList.add("hero__showcase-video--active");
+    fgVideos[currentIndex].currentTime = 0;
+    fgVideos[currentIndex].play();
+
+    // Swap background videos
+    bgVideos[prev].classList.remove("hero__bg-video--active");
+    bgVideos[prev].pause();
+    bgVideos[currentIndex].classList.add("hero__bg-video--active");
+    bgVideos[currentIndex].currentTime = 0;
+    bgVideos[currentIndex].play();
+
+    // Update label
+    if (label) {
+      label.style.opacity = "0";
+      setTimeout(() => {
+        label.textContent = labels[currentIndex];
+        label.style.opacity = "1";
+      }, 300);
+    }
+
+    // Update dots
+    dots.forEach((d, i) => {
+      d.classList.toggle("hero__showcase-dot--active", i === currentIndex);
+    });
+  }
+
+  // Auto-advance when foreground video finishes playing
+  fgVideos.forEach((video, i) => {
+    video.addEventListener("ended", () => {
+      if (i === currentIndex) {
+        goTo(currentIndex + 1);
+      }
+    });
+  });
+
+  // Dot click
+  dots.forEach((dot) => {
+    dot.addEventListener("click", () => {
+      goTo(parseInt(dot.dataset.index, 10));
+    });
+  });
+
+  // Start first video
+  fgVideos[0].play();
+  bgVideos[0].play();
+}
+
+
+/* ===========================================
+   3. NAVBAR
    =========================================== */
 
 function initNavbar() {
@@ -136,7 +218,7 @@ function initNavbar() {
 
 
 /* ===========================================
-   3. RESULTS GALLERY CAROUSEL
+   4. RESULTS GALLERY CAROUSEL
    =========================================== */
 
 function initCarousel() {
@@ -236,7 +318,7 @@ function initCarousel() {
 
 
 /* ===========================================
-   4. BIBTEX COPY
+   5. BIBTEX COPY
    =========================================== */
 
 function initBibTeXCopy() {

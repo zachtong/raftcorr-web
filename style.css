@@ -382,10 +382,51 @@ button {
   max-width: var(--container-max);
 }
 
-/* Video Placeholder Card */
-.hero__video-card {
+/* Background Video Layer */
+.hero__bg-video-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.hero__bg-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: blur(30px) saturate(1.2);
+  transform: scale(1.15); /* hide blur edge artifacts */
+  opacity: 0;
+  transition: opacity 1.2s ease;
+}
+
+.hero__bg-video--active {
+  opacity: 1;
+}
+
+.hero__bg-overlay {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 50% 40%, rgba(22, 42, 74, 0.6) 0%, rgba(10, 15, 28, 0.85) 70%),
+    linear-gradient(180deg, rgba(10, 15, 28, 0.3) 0%, rgba(10, 15, 28, 0.7) 100%);
+  z-index: 1;
+}
+
+/* Foreground Showcase Card */
+.hero__showcase {
   width: 78%;
   max-width: 1000px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.hero__showcase-card {
+  width: 100%;
   border-radius: var(--radius-xl);
   overflow: hidden;
   box-shadow:
@@ -396,82 +437,80 @@ button {
   transition: box-shadow var(--transition-slow);
 }
 
-.hero__video-card:hover {
+.hero__showcase-card:hover {
   box-shadow:
     0 0 100px var(--glow-blue-strong),
     0 0 200px rgba(74, 158, 255, 0.12),
     0 20px 60px rgba(0, 0, 0, 0.4);
 }
 
-.hero__video-placeholder {
+.hero__showcase-viewport {
   position: relative;
   width: 100%;
-  padding-bottom: 56.25%; /* 16:9 aspect ratio */
+  padding-bottom: 56.25%; /* 16:9 */
+  background: #000;
   overflow: hidden;
 }
 
-.hero__video-gradient {
+.hero__showcase-video {
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    135deg,
-    #0000cc 0%,
-    #0066ff 15%,
-    #00ccff 25%,
-    #00ffcc 35%,
-    #00ff66 45%,
-    #66ff00 55%,
-    #ccff00 62%,
-    #ffff00 70%,
-    #ffcc00 78%,
-    #ff6600 86%,
-    #ff0000 95%
-  );
-  background-size: 400% 400%;
-  animation: gradient-shift 8s ease infinite;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: #000;
+  opacity: 0;
+  transition: opacity 0.8s ease;
 }
 
-@keyframes gradient-shift {
-  0% {
-    background-position: 0% 50%;
-  }
-  25% {
-    background-position: 100% 0%;
-  }
-  50% {
-    background-position: 100% 100%;
-  }
-  75% {
-    background-position: 0% 100%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
+.hero__showcase-video--active {
+  opacity: 1;
 }
 
-.hero__play-overlay {
-  position: absolute;
-  inset: 0;
+.hero__showcase-label {
+  padding: 10px 20px;
+  text-align: center;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  background: rgba(0, 0, 0, 0.3);
+  letter-spacing: 0.02em;
+  transition: opacity 0.4s ease;
+}
+
+/* Showcase Navigation Dots */
+.hero__showcase-nav {
   display: flex;
   align-items: center;
-  justify-content: center;
-  background: rgba(0, 0, 0, 0.15);
-  transition: background var(--transition-base);
+  gap: 12px;
+}
+
+.hero__showcase-dots {
+  display: flex;
+  gap: 8px;
+}
+
+.hero__showcase-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: 1.5px solid var(--text-muted);
+  background: transparent;
   cursor: pointer;
+  padding: 0;
+  transition: all var(--transition-base);
 }
 
-.hero__play-overlay:hover {
-  background: rgba(0, 0, 0, 0.25);
+.hero__showcase-dot:hover {
+  border-color: var(--text-secondary);
+  background: rgba(255, 255, 255, 0.15);
 }
 
-.hero__play-icon {
-  opacity: 0.7;
-  transition: opacity var(--transition-base), transform var(--transition-base);
-}
-
-.hero__play-overlay:hover .hero__play-icon {
-  opacity: 1;
-  transform: scale(1.08);
+.hero__showcase-dot--active {
+  border-color: var(--accent-blue);
+  background: var(--accent-blue);
+  width: 24px;
+  border-radius: 4px;
 }
 
 /* Hero Text */
@@ -1886,9 +1925,13 @@ button {
     gap: 16px;
   }
 
-  .hero__video-card {
-    width: 50%;
+  .hero__showcase {
+    width: 92%;
     max-width: 400px;
+  }
+
+  .hero__bg-video {
+    filter: blur(20px) saturate(1.1);
   }
 
   .hero__title {
