@@ -471,58 +471,66 @@
               <th class="comparison__th comparison__th--metric">Metric</th>
               <th class="comparison__th comparison__th--raftcorr">RAFTcorr</th>
               <th class="comparison__th">Ncorr</th>
+              <th class="comparison__th">DICe</th>
               <th class="comparison__th">VIC-2D</th>
             </tr>
           </thead>
           <tbody>
             <tr data-animate="slide-left" data-delay="100">
               <td class="comparison__metric">Speed</td>
-              <td class="comparison__value comparison__value--highlight comparison__value--advantage">&lt;1s / frame</td>
-              <td class="comparison__value">~minutes</td>
-              <td class="comparison__value">~minutes</td>
+              <td class="comparison__value comparison__value--highlight comparison__value--advantage">Seconds</td>
+              <td class="comparison__value">Minutes</td>
+              <td class="comparison__value">Minutes</td>
+              <td class="comparison__value">Minutes</td>
             </tr>
             <tr data-animate="slide-left" data-delay="150">
-              <td class="comparison__metric">Range</td>
-              <td class="comparison__value comparison__value--highlight comparison__value--advantage">200+ px</td>
-              <td class="comparison__value">~15 px</td>
-              <td class="comparison__value">~20 px</td>
+              <td class="comparison__metric">Disp. Range</td>
+              <td class="comparison__value comparison__value--highlight comparison__value--advantage">Large</td>
+              <td class="comparison__value">Moderate</td>
+              <td class="comparison__value">Moderate</td>
+              <td class="comparison__value">Moderate</td>
             </tr>
             <tr data-animate="slide-left" data-delay="200">
               <td class="comparison__metric">Parameters</td>
-              <td class="comparison__value comparison__value--highlight comparison__value--advantage">0</td>
-              <td class="comparison__value">5&ndash;8</td>
-              <td class="comparison__value">5&ndash;8</td>
+              <td class="comparison__value comparison__value--highlight comparison__value--advantage">Minimal</td>
+              <td class="comparison__value">Multiple</td>
+              <td class="comparison__value">Multiple</td>
+              <td class="comparison__value">Multiple</td>
             </tr>
             <tr data-animate="slide-left" data-delay="250">
               <td class="comparison__metric">Accuracy</td>
-              <td class="comparison__value comparison__value--highlight">~0.03 px</td>
-              <td class="comparison__value comparison__value--advantage">~0.01 px</td>
-              <td class="comparison__value comparison__value--advantage">~0.01 px</td>
+              <td class="comparison__value comparison__value--highlight">0.01&ndash;0.1 px</td>
+              <td class="comparison__value">0.01&ndash;0.1 px</td>
+              <td class="comparison__value">0.01&ndash;0.1 px</td>
+              <td class="comparison__value">0.01&ndash;0.1 px</td>
             </tr>
             <tr data-animate="slide-left" data-delay="300">
               <td class="comparison__metric">Cost</td>
               <td class="comparison__value comparison__value--highlight comparison__value--advantage">Free</td>
-              <td class="comparison__value">Free</td>
-              <td class="comparison__value">$$$</td>
+              <td class="comparison__value comparison__value--advantage">Free</td>
+              <td class="comparison__value comparison__value--advantage">Free</td>
+              <td class="comparison__value comparison__value--disadvantage">Commercial</td>
             </tr>
             <tr data-animate="slide-left" data-delay="350">
-              <td class="comparison__metric">GPU Accel.</td>
-              <td class="comparison__value comparison__value--highlight comparison__value--advantage">&#10003; CUDA</td>
-              <td class="comparison__value comparison__value--disadvantage">&#10007;</td>
-              <td class="comparison__value comparison__value--disadvantage">&#10007;</td>
+              <td class="comparison__metric">GPU Required</td>
+              <td class="comparison__value comparison__value--highlight comparison__value--disadvantage">Yes (NVIDIA)</td>
+              <td class="comparison__value comparison__value--advantage">No</td>
+              <td class="comparison__value comparison__value--advantage">No</td>
+              <td class="comparison__value comparison__value--advantage">No</td>
             </tr>
             <tr data-animate="slide-left" data-delay="400">
-              <td class="comparison__metric">Interface</td>
-              <td class="comparison__value comparison__value--highlight">Web GUI</td>
-              <td class="comparison__value">MATLAB</td>
-              <td class="comparison__value">Desktop</td>
+              <td class="comparison__metric">GUI</td>
+              <td class="comparison__value comparison__value--highlight comparison__value--advantage">&#10003;</td>
+              <td class="comparison__value comparison__value--advantage">&#10003;</td>
+              <td class="comparison__value comparison__value--advantage">&#10003;</td>
+              <td class="comparison__value comparison__value--advantage">&#10003;</td>
             </tr>
           </tbody>
         </table>
       </div>
 
       <p class="comparison__footnote" data-animate="fade-in" data-delay="500">
-        <em>Accuracy comparison based on standard SEM Challenge benchmark. RAFTcorr trades marginal sub-pixel accuracy for dramatic gains in speed, range, and usability.</em>
+        <em>Accuracy depends on image quality, speckle pattern, and calculation parameters for all methods. RAFTcorr&rsquo;s key advantages are speed and large displacement range without parameter tuning.</em>
       </p>
     </div>
   </section>
@@ -577,9 +585,9 @@
       <div class="team__grid" data-animate="fade-in" data-delay="200">
         <div class="team__member">
           <div class="team__avatar">
-            <span class="team__initials">ZT</span>
+            <img src="assets/images/authors/Zixiang_Tong.png" alt="Zixiang (Zach) Tong" class="team__avatar-img">
           </div>
-          <h3 class="team__name">Zixiang Tong</h3>
+          <h3 class="team__name">Zixiang (Zach) Tong</h3>
           <p class="team__role">Lead Developer</p>
         </div>
 
@@ -628,7 +636,9 @@
 
       <div class="citation__block" data-animate="fade-in" data-delay="200">
         <pre class="citation__code" id="bibtex-code"><code>@article{tong2026raftcorr,
-  title={RAFTcorr: Deep Learning Digital Image Correlation},
+  title={RAFTcorr: An Adaptive, Open-Source, Deep Learning
+         Digital Image Correlation Framework for Dense
+         Displacement Measurement},
   author={Tong, Zixiang and Bu, Lehu and Shi, Qihang
           and Du, Runtian and Yang, Jin},
   year={2026},
