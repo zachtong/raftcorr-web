@@ -33,8 +33,6 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
 
-  <!-- Performance: DNS prefetch for YouTube embed -->
-  <link rel="dns-prefetch" href="https://www.youtube.com">
 
   <!-- Styles -->
   <link rel="stylesheet" href="style.css">
@@ -245,17 +243,9 @@
 
       <div class="demo__video-wrapper" data-animate="fade-in" data-delay="200">
         <div class="demo__video-card glass-card">
-          <!-- YouTube embed placeholder — replace data-video-id with actual YouTube ID -->
-          <div class="demo__video-container" data-video-id="YOUR_YOUTUBE_ID">
-            <div class="demo__video-thumbnail">
-              <div class="demo__video-play-btn">
-                <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <circle cx="24" cy="24" r="23" stroke="rgba(255,255,255,0.4)" stroke-width="2"/>
-                  <path d="M20 15L35 24L20 33V15Z" fill="rgba(255,255,255,0.9)"/>
-                </svg>
-              </div>
-            </div>
-          </div>
+          <video class="demo__video" controls preload="metadata" playsinline
+                 src="assets/videos/raftcorr_demo.mp4">
+          </video>
         </div>
       </div>
 
@@ -283,7 +273,14 @@
         </div>
         <div class="demo__step">
           <span class="demo__step-number">4</span>
-          <span class="demo__step-label">Visualize</span>
+          <span class="demo__step-label">Displacement</span>
+        </div>
+        <div class="demo__step-arrow">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M5 12H19M19 12L13 6M19 12L13 18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="demo__step">
+          <span class="demo__step-number">5</span>
+          <span class="demo__step-label">Strain</span>
         </div>
       </div>
     </div>

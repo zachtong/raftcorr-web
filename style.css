@@ -742,36 +742,11 @@ button {
   border-color: rgba(74, 158, 255, 0.15);
 }
 
-.demo__video-container {
-  position: relative;
+.demo__video {
+  display: block;
   width: 100%;
-  padding-bottom: 56.25%;
+  border-radius: var(--radius-md);
   background: var(--bg-secondary);
-}
-
-.demo__video-thumbnail {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(135deg, var(--bg-secondary) 0%, #1a3050 100%);
-  cursor: pointer;
-  transition: background var(--transition-base);
-}
-
-.demo__video-thumbnail:hover {
-  background: linear-gradient(135deg, #1a2840 0%, #1a3560 100%);
-}
-
-.demo__video-play-btn {
-  opacity: 0.7;
-  transition: opacity var(--transition-base), transform var(--transition-base);
-}
-
-.demo__video-thumbnail:hover .demo__video-play-btn {
-  opacity: 1;
-  transform: scale(1.08);
 }
 
 .demo__workflow {
