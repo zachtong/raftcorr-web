@@ -1926,8 +1926,9 @@ button {
     max-width: 400px;
   }
 
-  .hero__bg-video {
-    filter: blur(20px) saturate(1.1);
+  /* Hide background video layer on mobile to save bandwidth and video slots */
+  .hero__bg-video-layer {
+    display: none;
   }
 
   .hero__title {

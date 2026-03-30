@@ -57,8 +57,9 @@ function initHeroShowcase() {
   const fgVideos = document.querySelectorAll(".hero__showcase-video");
   const dots = document.querySelectorAll(".hero__showcase-dot");
   const label = document.getElementById("hero-showcase-label");
+  const viewport = document.querySelector(".hero__showcase-viewport");
 
-  if (fgVideos.length === 0 || bgVideos.length === 0) return;
+  if (fgVideos.length === 0) return;
 
   const labels = [
     "Aluminum with Hole \u2014 Displacement",
@@ -69,63 +70,157 @@ function initHeroShowcase() {
     "Foam Fracture \u2014 Strain",
   ];
 
+  // Collect video sources from the existing <video> elements
+  const sources = Array.from(fgVideos).map((v) => v.getAttribute("src"));
+
   let currentIndex = 0;
 
-  function goTo(index) {
-    const next = ((index % fgVideos.length) + fgVideos.length) % fgVideos.length;
-    if (next === currentIndex && fgVideos[currentIndex].currentTime > 0) return;
-    const prev = currentIndex;
-    currentIndex = next;
+  // Detect mobile: use single-video strategy to avoid browser video slot limits
+  const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent)
+    || (navigator.maxTouchPoints > 1 && window.innerWidth <= 1024);
 
-    // Swap foreground videos
-    fgVideos[prev].classList.remove("hero__showcase-video--active");
-    fgVideos[prev].pause();
-    fgVideos[prev].currentTime = 0;
-    fgVideos[currentIndex].classList.add("hero__showcase-video--active");
-    fgVideos[currentIndex].currentTime = 0;
-    fgVideos[currentIndex].play();
-
-    // Swap background videos
-    bgVideos[prev].classList.remove("hero__bg-video--active");
-    bgVideos[prev].pause();
-    bgVideos[currentIndex].classList.add("hero__bg-video--active");
-    bgVideos[currentIndex].currentTime = 0;
-    bgVideos[currentIndex].play();
-
-    // Update label
-    if (label) {
-      label.style.opacity = "0";
-      setTimeout(() => {
-        label.textContent = labels[currentIndex];
-        label.style.opacity = "1";
-      }, 300);
+  /** Safely play a video — handle mobile rejection gracefully */
+  function safePlay(video) {
+    if (!video) return;
+    const p = video.play();
+    if (p && typeof p.catch === "function") {
+      p.catch(() => {
+        // Retry once after a short delay (covers mobile unlock timing)
+        setTimeout(() => {
+          video.play().catch(() => { /* give up silently */ });
+        }, 300);
+      });
     }
-
-    // Update dots
-    dots.forEach((d, i) => {
-      d.classList.toggle("hero__showcase-dot--active", i === currentIndex);
-    });
   }
 
-  // Auto-advance when foreground video finishes playing
-  fgVideos.forEach((video, i) => {
-    video.addEventListener("ended", () => {
-      if (i === currentIndex) {
-        goTo(currentIndex + 1);
+  if (isMobile) {
+    // --- MOBILE STRATEGY: single <video>, swap src ---
+    // Remove all <video> elements except the first one
+    const singleVideo = fgVideos[0];
+    for (let i = 1; i < fgVideos.length; i++) {
+      fgVideos[i].remove();
+    }
+    // Remove all background videos (CSS hides the layer, but also free memory)
+    bgVideos.forEach((v) => { v.pause(); v.removeAttribute("src"); v.load(); });
+
+    singleVideo.classList.add("hero__showcase-video--active");
+    singleVideo.setAttribute("src", sources[0]);
+    singleVideo.loop = false;
+    safePlay(singleVideo);
+
+    function goToMobile(index) {
+      const next = ((index % sources.length) + sources.length) % sources.length;
+      if (next === currentIndex && singleVideo.currentTime > 0) return;
+      currentIndex = next;
+
+      // Fade out, swap src, fade in
+      singleVideo.style.opacity = "0";
+      setTimeout(() => {
+        singleVideo.setAttribute("src", sources[currentIndex]);
+        singleVideo.load();
+        singleVideo.style.opacity = "1";
+        safePlay(singleVideo);
+      }, 400);
+
+      // Update label
+      if (label) {
+        label.style.opacity = "0";
+        setTimeout(() => {
+          label.textContent = labels[currentIndex];
+          label.style.opacity = "1";
+        }, 300);
       }
-    });
-  });
 
-  // Dot click
-  dots.forEach((dot) => {
-    dot.addEventListener("click", () => {
-      goTo(parseInt(dot.dataset.index, 10));
-    });
-  });
+      // Update dots
+      dots.forEach((d, i) => {
+        d.classList.toggle("hero__showcase-dot--active", i === currentIndex);
+      });
+    }
 
-  // Start first video
-  fgVideos[0].play();
-  bgVideos[0].play();
+    singleVideo.addEventListener("ended", () => {
+      goToMobile(currentIndex + 1);
+    });
+
+    // Fallback: if video stalls or doesn't fire "ended", auto-advance after 8s
+    let mobileTimer = setInterval(() => {
+      if (singleVideo.paused || singleVideo.ended) {
+        goToMobile(currentIndex + 1);
+      }
+    }, 8000);
+
+    dots.forEach((dot) => {
+      dot.addEventListener("click", () => {
+        clearInterval(mobileTimer);
+        goToMobile(parseInt(dot.dataset.index, 10));
+        mobileTimer = setInterval(() => {
+          if (singleVideo.paused || singleVideo.ended) {
+            goToMobile(currentIndex + 1);
+          }
+        }, 8000);
+      });
+    });
+
+  } else {
+    // --- DESKTOP STRATEGY: multiple <video> elements (original behavior) ---
+
+    function goTo(index) {
+      const next = ((index % fgVideos.length) + fgVideos.length) % fgVideos.length;
+      if (next === currentIndex && fgVideos[currentIndex].currentTime > 0) return;
+      const prev = currentIndex;
+      currentIndex = next;
+
+      // Swap foreground videos
+      fgVideos[prev].classList.remove("hero__showcase-video--active");
+      fgVideos[prev].pause();
+      fgVideos[prev].currentTime = 0;
+      fgVideos[currentIndex].classList.add("hero__showcase-video--active");
+      fgVideos[currentIndex].currentTime = 0;
+      safePlay(fgVideos[currentIndex]);
+
+      // Swap background videos
+      if (bgVideos.length > 0) {
+        bgVideos[prev].classList.remove("hero__bg-video--active");
+        bgVideos[prev].pause();
+        bgVideos[currentIndex].classList.add("hero__bg-video--active");
+        bgVideos[currentIndex].currentTime = 0;
+        safePlay(bgVideos[currentIndex]);
+      }
+
+      // Update label
+      if (label) {
+        label.style.opacity = "0";
+        setTimeout(() => {
+          label.textContent = labels[currentIndex];
+          label.style.opacity = "1";
+        }, 300);
+      }
+
+      // Update dots
+      dots.forEach((d, i) => {
+        d.classList.toggle("hero__showcase-dot--active", i === currentIndex);
+      });
+    }
+
+    // Auto-advance when foreground video finishes playing
+    fgVideos.forEach((video, i) => {
+      video.addEventListener("ended", () => {
+        if (i === currentIndex) {
+          goTo(currentIndex + 1);
+        }
+      });
+    });
+
+    // Dot click
+    dots.forEach((dot) => {
+      dot.addEventListener("click", () => {
+        goTo(parseInt(dot.dataset.index, 10));
+      });
+    });
+
+    // Start first video
+    safePlay(fgVideos[0]);
+    if (bgVideos.length > 0) safePlay(bgVideos[0]);
+  }
 }
 
 
